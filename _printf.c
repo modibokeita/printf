@@ -4,6 +4,7 @@ int print_int(int num);
 int print_octal(unsigned int num);
 int print_hexadecimal(unsigned int num, int uppercase);
 int print_uint(unsigned int num);
+
 /**
  * _printf - produces output according to a format.
  * @format: string format
@@ -146,4 +147,121 @@ int _printf(const char *format, ...)
 	}
 	va_end(list_of_args);
 	return (chara_print);
+}
+
+#include "main.h"
+/**
+ * print_int - Prints an integer to stdout.
+ * @num: The integer to be printed.
+ *
+ * Return: The number of characters printed.
+ */
+int print_int(int num)
+{
+	int count_num = 0;
+	int reversed;
+
+	if (num < 0)
+	{
+		putchar('-');
+		count_num++;
+		num = -num;
+	}
+	if (num == 0)
+	{
+		putchar('0');
+		count_num++;
+	}
+	else
+	{
+		reversed = 0;
+
+		while (num > 0)
+		{
+			reversed = reversed * 10 + num % 10;
+			num /= 10;
+			count_num++;
+		}
+		while (reversed > 0)
+		{
+			putchar(reversed % 10 + '0');
+			reversed /= 10;
+		}
+	}
+	return (count_num);
+}
+
+#include "main.h"
+/**
+ * print_octal - Prints an unsigned integer in octal format to stdout.
+ * @num: The unsigned integer to be printed.
+ *
+ * Return: The number of characters printed.
+ */
+int print_octal(unsigned int num)
+{
+	int count_num = 0;
+
+	if (num == 0)
+	{
+		putchar('0');
+		count_num++;
+	}
+	else
+	{
+		int octal[12];
+		int i = 0;
+
+		while (num > 0)
+		{
+			octal[i++] = num % 8;
+			num /= 8;
+		}
+		while (i > 0)
+		{
+			putchar(octal[--i] + '0');
+			count_num++;
+		}
+	}
+	return (count_num);
+}
+
+/**
+ * print_hexadecimal - Prints an unsigned integer
+ * @num: The unsigned integer to be printed.
+ * @uppercase: 1 for uppercase letters (A-F), 0 for lowercase (a-f).
+ *
+ * Return: The number of characters printed.
+ */
+int print_hexadecimal(unsigned int num, int uppercase)
+{
+	int count_num = 0;
+	char hex_chars[] = "0123456789abcdef";
+
+	if (num == 0)
+	{
+		putchar('0');
+		count_num++;
+	}
+	else
+	{
+		char hex[12];
+		int i = 0;
+
+		while (num > 0)
+		{
+			hex[i++] = hex_chars[num % 16];
+			num /= 16;
+		}
+		while (i > 0)
+		{
+			char c = hex[--i];
+
+			if (uppercase)
+				c = toupper(c);
+			putchar(c);
+			count_num++;
+		}
+	}
+	return (count_num);
 }
