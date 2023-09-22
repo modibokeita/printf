@@ -1,4 +1,6 @@
 #include "main.h"
+#include <ctype.h>
+#include <stddef.h>
 
 int print_int(int num);
 int print_octal(unsigned int num);
@@ -16,6 +18,13 @@ int _printf(const char *format, ...)
 	va_list list_of_args;
 	int chara_print = 0;
 	int i, j;
+
+	if (format == NULL)
+	{
+		fprintf(stderr, "Error: format string is NULL\n");
+		return (-1);
+	}
+
 
 	va_start(list_of_args, format);
 
@@ -40,9 +49,17 @@ int _printf(const char *format, ...)
 
 						char *str = va_arg(list_of_args, char*);
 
+					if (str != NULL)
+					{
 						fputs(str, stdout);
 						chara_print += strlen(str);
-						break;
+					}
+					else
+					{
+						fputs("(null)", stdout);
+						chara_print += 6;
+					}
+					break;
 					}
 				case 'i':
 				case 'd':
@@ -125,9 +142,18 @@ int _printf(const char *format, ...)
 					}
 				case '%':
 					{
+					if (format[i + 1] == '%')
+					{
 						putchar('%');
 						chara_print++;
-						break;
+						i++;
+					}
+					else
+					{
+						putchar('%');
+						chara_print++;
+					}
+					break;
 					}
 				default:
 					{
